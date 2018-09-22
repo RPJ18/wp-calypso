@@ -221,7 +221,7 @@ export function startImporting( importerStatus ) {
 	wpcom.updateImporter( siteId, createImportOrder( importerStatus ) );
 }
 
-export const startUpload = ( importerStatus, file ) => dispatch => {
+export const startUpload = ( importerStatus, file ) => {
 	const {
 		importerId,
 		site: { ID: siteId },
@@ -243,8 +243,7 @@ export const startUpload = ( importerStatus, file ) => dispatch => {
 					uploadTotal: event.total,
 					importerId,
 				};
-
-				dispatch( progressAction );
+				Dispatcher.handleViewAction( progressAction );
 				reduxDispatch( progressAction );
 			},
 			onabort: () => cancelImport( siteId, importerId ),
@@ -260,8 +259,7 @@ export const startUpload = ( importerStatus, file ) => dispatch => {
 					siteId,
 				} ),
 			};
-
-			dispatch( finishUploadAction );
+			Dispatcher.handleViewAction( finishUploadAction );
 			reduxDispatch( finishUploadAction );
 		} )
 		.catch( error => {
@@ -270,11 +268,10 @@ export const startUpload = ( importerStatus, file ) => dispatch => {
 				importerId,
 				error: error.message,
 			};
-
-			dispatch( failUploadAction );
+			Dispatcher.handleViewAction( failUploadAction );
 			reduxDispatch( failUploadAction );
 		} );
 
-	dispatch( startUploadAction );
+	Dispatcher.handleViewAction( startUploadAction );
 	reduxDispatch( startUploadAction );
 };
